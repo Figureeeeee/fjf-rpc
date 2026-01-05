@@ -1,10 +1,11 @@
 package com.fjf.fjfrpc.server;
 
+import com.fjf.fjfrpc.RpcApplication;
 import com.fjf.fjfrpc.model.RpcRequest;
 import com.fjf.fjfrpc.model.RpcResponse;
 import com.fjf.fjfrpc.registry.LocalRegistry;
-import com.fjf.fjfrpc.serializer.JdkSerializer;
 import com.fjf.fjfrpc.serializer.Serializer;
+import com.fjf.fjfrpc.serializer.SerializerFactory;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -22,7 +23,7 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
     @Override
     public void handle(HttpServerRequest request) {
         // 指定序列化器
-        final Serializer serializer = new JdkSerializer();
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 记录日志
         System.out.println("Received request: " + request.method() + " " + request.uri());
