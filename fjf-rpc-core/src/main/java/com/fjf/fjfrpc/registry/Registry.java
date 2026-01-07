@@ -49,4 +49,11 @@ public interface Registry {
      * 心跳检测（服务端）
      */
     void heartBeat();
+
+    /**
+     * 监听服务节点变化（消费端）
+     *
+     * @param serviceNodeKey 服务节点键名
+     */
+    void watch(String serviceNodeKey);
 }
