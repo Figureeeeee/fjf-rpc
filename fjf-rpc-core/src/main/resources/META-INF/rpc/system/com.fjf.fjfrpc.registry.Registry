@@ -1,1 +1,2 @@
 etcd=com.fjf.fjfrpc.registry.EtcdRegistry
+zookeeper=com.fjf.fjfrpc.registry.ZooKeeperRegistry
