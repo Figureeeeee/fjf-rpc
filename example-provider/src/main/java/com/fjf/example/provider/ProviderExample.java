@@ -12,6 +12,7 @@ import com.fjf.fjfrpc.registry.Registry;
 import com.fjf.fjfrpc.registry.RegistryFactory;
 import com.fjf.fjfrpc.server.HttpServer;
 import com.fjf.fjfrpc.server.VertxHttpServer;
+import com.fjf.fjfrpc.server.tcp.VertxTcpServer;
 
 /**
  * 服务提供者示例
@@ -41,8 +42,8 @@ public class ProviderExample {
             throw new RuntimeException(e);
         }
 
-        // 启动 web 服务
-        HttpServer httpServer = new VertxHttpServer();
-        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+        // 启动 TCP 服务
+        VertxTcpServer vertxTcpServer = new VertxTcpServer();
+        vertxTcpServer.doStart(8080);
     }
 }
