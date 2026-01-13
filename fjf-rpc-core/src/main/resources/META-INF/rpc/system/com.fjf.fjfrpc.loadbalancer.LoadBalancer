@@ -1,0 +1,3 @@
+roundRobin=com.fjf.fjfrpc.loadbalancer.RoundRobinLoadBalancer
+random=com.fjf.fjfrpc.loadbalancer.RandomLoadBalancer
+consistentHash=com.fjf.fjfrpc.loadbalancer.ConsistentHashLoadBalancer

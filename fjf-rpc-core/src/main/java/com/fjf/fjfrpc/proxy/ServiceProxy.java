@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.fjf.fjfrpc.RpcApplication;
 import com.fjf.fjfrpc.config.RpcConfig;
 import com.fjf.fjfrpc.constant.RpcConstant;
+import com.fjf.fjfrpc.loadbalancer.LoadBalancer;
+import com.fjf.fjfrpc.loadbalancer.LoadBalancerFactory;
 import com.fjf.fjfrpc.model.RpcRequest;
 import com.fjf.fjfrpc.model.RpcResponse;
 import com.fjf.fjfrpc.model.ServiceMetaInfo;
@@ -16,7 +18,9 @@ import com.fjf.fjfrpc.server.tcp.VertxTcpClient;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 服务代理（JDK 动态代理）
@@ -54,7 +58,18 @@ public class ServiceProxy implements InvocationHandler {
             if (CollUtil.isEmpty(serviceMetaInfoList)) {
                 throw new RuntimeException("暂无服务地址");
             }
-            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfoList.get(0);
+            // 默认选择第一个服务提供者（过时，改为负载均衡选择）
+//            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfoList.get(0);
+
+            // 负载均衡
+            LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(rpcConfig.getLoadBalancer());
+            // 将调用方法名（请求路径）作为负载均衡参数
+            Map<String, Object> requestParams = new HashMap<>();
+            requestParams.put("methodName", method.getName());
+            ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
+            System.out.println("ServiceProxy 负载均衡器选中节点: " + selectedServiceMetaInfo.getServiceHost()
+                    + ":" + selectedServiceMetaInfo.getServicePort());
+
             // 发送 TCP 请求
             RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
             return rpcResponse.getData();
