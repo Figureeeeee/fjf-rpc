@@ -53,7 +53,13 @@
             <artifactId>curator-x-discovery</artifactId>
             <version>5.6.0</version>
         </dependency>
-
+        <!-- Guava-Retrying 重试库 -->
+        <!-- https://github.com/rholder/guava-retrying -->
+        <dependency>
+            <groupId>com.github.rholder</groupId>
+            <artifactId>guava-retrying</artifactId>
+            <version>2.0.0</version>
+        </dependency>
         <!-- https://projectlombok.org/ -->
         <dependency>
             <groupId>org.projectlombok</groupId>

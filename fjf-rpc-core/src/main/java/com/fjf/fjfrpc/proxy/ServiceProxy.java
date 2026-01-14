@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.fjf.fjfrpc.RpcApplication;
 import com.fjf.fjfrpc.config.RpcConfig;
 import com.fjf.fjfrpc.constant.RpcConstant;
+import com.fjf.fjfrpc.fault.retry.RetryStrategy;
+import com.fjf.fjfrpc.fault.retry.RetryStrategyFactory;
 import com.fjf.fjfrpc.loadbalancer.LoadBalancer;
 import com.fjf.fjfrpc.loadbalancer.LoadBalancerFactory;
 import com.fjf.fjfrpc.model.RpcRequest;
@@ -70,8 +72,12 @@ public class ServiceProxy implements InvocationHandler {
             System.out.println("ServiceProxy 负载均衡器选中节点: " + selectedServiceMetaInfo.getServiceHost()
                     + ":" + selectedServiceMetaInfo.getServicePort());
 
-            // 发送 TCP 请求
-            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
+            // rpc请求
+            // 使用重试策略
+            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
+                    VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
+            );
             return rpcResponse.getData();
         } catch (Exception e) {
             throw new RuntimeException("调用失败");

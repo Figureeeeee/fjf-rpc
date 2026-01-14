@@ -38,6 +38,8 @@ public class VertxTcpClient {
                 result -> {
                     if (!result.succeeded()) {
                         System.err.println("Failed to connect to TCP server");
+                        // 关键：让 responseFuture 以异常方式完成，这样 get() 会抛出异常，重试策略才能捕获
+                        responseFuture.completeExceptionally(new RuntimeException("Failed to connect to TCP server"));
                         return;
                     }
                     NetSocket socket = result.result();
@@ -69,8 +71,9 @@ public class VertxTcpClient {
                                     ProtocolMessage<RpcResponse> rpcResponseProtocolMessage =
                                             (ProtocolMessage<RpcResponse>) ProtocolMessageDecoder.decode(buffer);
                                     responseFuture.complete(rpcResponseProtocolMessage.getBody());
-                                } catch (IOException e) {
-                                    throw new RuntimeException("协议消息解码错误");
+                                } catch (Exception e) {
+                                    // 关键：通过 responseFuture 把异常传递给主线程
+                                    responseFuture.completeExceptionally(new RuntimeException("协议消息解码错误", e));
                                 }
                             }
                     );

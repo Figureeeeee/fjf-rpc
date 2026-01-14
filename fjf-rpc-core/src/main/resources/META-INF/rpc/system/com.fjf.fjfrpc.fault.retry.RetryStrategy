@@ -1,0 +1,2 @@
+no=com.fjf.fjfrpc.fault.retry.NoRetryStrategy
+fixedInterval=com.fjf.fjfrpc.fault.retry.FixedIntervalRetryStrategy

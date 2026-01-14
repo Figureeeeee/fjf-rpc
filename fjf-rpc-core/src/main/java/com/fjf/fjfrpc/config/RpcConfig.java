@@ -1,5 +1,6 @@
 package com.fjf.fjfrpc.config;
 
+import com.fjf.fjfrpc.fault.retry.RetryStrategyKeys;
 import com.fjf.fjfrpc.loadbalancer.LoadBalancerKeys;
 import com.fjf.fjfrpc.serializer.SerializerKeys;
 import lombok.Data;
@@ -49,4 +50,9 @@ public class RpcConfig {
      * 负载均衡器
      */
     private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
+
+    /**
+     * 重试策略
+     */
+    private String retryStrategy = RetryStrategyKeys.NO;
 }
