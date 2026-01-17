@@ -1,6 +1,7 @@
 package com.fjf.fjfrpc.config;
 
 import com.fjf.fjfrpc.fault.retry.RetryStrategyKeys;
+import com.fjf.fjfrpc.fault.tolerant.TolerantStrategyKeys;
 import com.fjf.fjfrpc.loadbalancer.LoadBalancerKeys;
 import com.fjf.fjfrpc.serializer.SerializerKeys;
 import lombok.Data;
@@ -55,4 +56,9 @@ public class RpcConfig {
      * 重试策略
      */
     private String retryStrategy = RetryStrategyKeys.NO;
+
+    /**
+     * 容错策略
+     */
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
 }

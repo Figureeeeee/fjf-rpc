@@ -1,0 +1,4 @@
+failBack=com.fjf.fjfrpc.fault.tolerant.FailBackTolerantStrategy
+failFast=com.fjf.fjfrpc.fault.tolerant.FailFastTolerantStrategy
+failOver=com.fjf.fjfrpc.fault.tolerant.FailOverTolerantStrategy
+failSafe=com.fjf.fjfrpc.fault.tolerant.FailSafeTolerantStrategy
