@@ -2,6 +2,7 @@ package com.fjf.example.consumer;
 
 import com.fjf.example.common.model.User;
 import com.fjf.example.common.service.UserService;
+import com.fjf.fjfrpc.bootstrap.ConsumerBootstrap;
 import com.fjf.fjfrpc.proxy.ServiceProxyFactory;
 
 /**
@@ -11,6 +12,9 @@ import com.fjf.fjfrpc.proxy.ServiceProxyFactory;
 public class ConsumerExample {
 
     public static void main(String[] args) {
+        // 服务消费者初始化
+        ConsumerBootstrap.init();
+
         // 获取代理
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
         User user = new User();
